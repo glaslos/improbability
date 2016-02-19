@@ -7,6 +7,8 @@ import (
   "encoding/json"
 )
 
+var cfilters = make(map[string]*cuckoofilter.CuckooFilter)
+
 func CuckooFilter(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   name := vars["name"]

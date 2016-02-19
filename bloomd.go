@@ -6,7 +6,11 @@ import (
   "github.com/geetarista/go-bloomd/bloomd"
   "github.com/gorilla/mux"
   "net/http"
+  "sync"
 )
+
+var mutex = &sync.Mutex{}
+var bfilters = make(map[string]*bloomd.Filter)
 
 func BloomdFilter(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)

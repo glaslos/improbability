@@ -7,6 +7,8 @@ import (
   "net/http"
 )
 
+var bbfilters = make(map[string]bbloom.Bloom)
+
 func BBFilter(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   name := vars["name"]

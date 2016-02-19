@@ -8,6 +8,8 @@ import (
   "net/http"
   )
 
+var cbfilters = make(map[string]*cbfilter.Filter)
+
 func CBFilter(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   name := vars["name"]

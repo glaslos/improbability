@@ -1,6 +1,7 @@
 package main
 
 import (
+  "github.com/zhenjl/bloom"
   "github.com/zhenjl/bloom/partitioned"
   "github.com/zhenjl/bloom/scalable"
   "github.com/spaolacci/murmur3"
@@ -8,6 +9,8 @@ import (
   "net/http"
   "encoding/json"
 )
+
+var sbfilters = make(map[string]bloom.Bloom)
 
 func SBFilter(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)

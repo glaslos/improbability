@@ -1,12 +1,15 @@
 package main
 
 import (
+  "github.com/zhenjl/bloom"
   "github.com/zhenjl/bloom/partitioned"
   "github.com/spaolacci/murmur3"
   "github.com/gorilla/mux"
   "net/http"
   "encoding/json"
 )
+
+var pbfilters = make(map[string]bloom.Bloom)
 
 func PBFilter(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
