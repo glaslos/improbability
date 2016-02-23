@@ -7,6 +7,7 @@ import (
   "github.com/gorilla/mux"
   "net/http"
   "encoding/json"
+  "strconv"
 )
 
 var hlls = make(map[string]*hyperloglog.HyperLogLogPlus)
@@ -31,7 +32,7 @@ func HLLPlus(w http.ResponseWriter, r *http.Request) {
     hll.Add(hash64(item))
     resp.Result = true
   } else if r.Method == "GET" {
-    resp.Value = hll.Count()
+    resp.Value = strconv.FormatUint(hll.Count(), 10)
     resp.Result = true
   }
   json.NewEncoder(w).Encode(resp)

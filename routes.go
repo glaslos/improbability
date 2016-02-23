@@ -12,5 +12,6 @@ func GetRouter() *mux.Router {
   router.HandleFunc("/api/pbfilter/{name:[a-z]+}", PBFilter)
   router.HandleFunc("/api/sbfilter/{name:[a-z]+}", SBFilter)
   router.HandleFunc("/api/hllplus/{name:[a-z]+}", HLLPlus)
+  router.HandleFunc("/api/skiplist/{name:[a-z]+}", SkipList)
   return router
 }
