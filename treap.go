@@ -9,6 +9,11 @@ import (
   "bytes"
 )
 
+type TResponse struct {
+  Response
+  Value     string  `json:"value"`
+}
+
 var treaps = make(map[string]*gtreap.Treap)
 
 func stringCompare(a, b interface{}) int {
@@ -19,7 +24,7 @@ func Treap(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   name := vars["name"]
   item := r.URL.Query().Get("item")
-  resp := Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}
+  resp := TResponse{Response: Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}}
   treap := treaps[name]
   if r.Method == "PUT" {
     treap := gtreap.NewTreap(stringCompare)

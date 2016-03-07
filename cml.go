@@ -8,13 +8,18 @@ import (
   "strconv"
 )
 
+type CMLResponse struct {
+  Response
+  Value     string  `json:"value"`
+}
+
 var cmlogs = make(map[string]*cml.Sketch)
 
 func CountMinLog(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   name := vars["name"]
   item := r.URL.Query().Get("item")
-  resp := Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}
+  resp := CMLResponse{Response: Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}}
   cmlog := cmlogs[name]
   if r.Method == "PUT" {
     cmlog, _ := cml.NewDefaultSketch()

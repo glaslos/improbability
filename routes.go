@@ -16,5 +16,6 @@ func GetRouter() *mux.Router {
   router.HandleFunc("/api/treap/{name:[a-z]+}", Treap)
   router.HandleFunc("/api/cml/{name:[a-z]+}", CountMinLog)
   router.HandleFunc("/api/cms/{name:[a-z]+}", CountMinSketch)
+  router.HandleFunc("/api/topk/{name:[a-z]+}", TopK)
   return router
 }

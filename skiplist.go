@@ -8,13 +8,18 @@ import (
   "strconv"
 )
 
+type SLResponse struct {
+  Response
+  Value     string  `json:"value"`
+}
+
 var slists = make(map[string]*skiplist.SkipList)
 
 func SkipList(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   name := vars["name"]
   item := r.URL.Query().Get("item")
-  resp := Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}
+  resp := SLResponse{Response: Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}}
   slist := slists[name]
   if r.Method == "PUT" {
     slist := skiplist.NewIntMap()

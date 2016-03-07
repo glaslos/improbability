@@ -8,13 +8,18 @@ import (
   "strconv"
 )
 
+type CMSResponse struct {
+  Response
+  Value     string  `json:"value"`
+}
+
 var cmsketchs = make(map[string]*countminsketch.CountMinSketch)
 
 func CountMinSketch(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   name := vars["name"]
   item := r.URL.Query().Get("item")
-  resp := Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}
+  resp := CMSResponse{Response: Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}}
   cmsketch := cmsketchs[name]
   if r.Method == "PUT" {
     var varepsilon, delta float64

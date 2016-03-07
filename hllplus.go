@@ -10,6 +10,11 @@ import (
   "strconv"
 )
 
+type HLLResponse struct {
+  Response
+  Value     string  `json:"value"`
+}
+
 var hlls = make(map[string]*hyperloglog.HyperLogLogPlus)
 
 func hash64(s string) hash.Hash64 {
@@ -22,7 +27,7 @@ func HLLPlus(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   name := vars["name"]
   item := r.URL.Query().Get("item")
-  resp := Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}
+  resp := HLLResponse{Response: Response{Item: item, Method: r.Method, Endpoint: r.URL.Path}}
   hll := hlls[name]
   if r.Method == "PUT" {
     hll, _ := hyperloglog.NewPlus(16)

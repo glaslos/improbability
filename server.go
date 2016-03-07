@@ -11,7 +11,6 @@ type Response struct {
   Result    bool    `json:"result"`
   Method    string  `json:"method"`
   Endpoint  string  `json:"endpoint"`
-  Value     string  `json:"value"`
 }
 
 func main() {
