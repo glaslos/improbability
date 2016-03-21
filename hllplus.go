@@ -7,12 +7,11 @@ import (
   "github.com/gorilla/mux"
   "net/http"
   "encoding/json"
-  "strconv"
 )
 
 type HLLResponse struct {
   Response
-  Value     string  `json:"value"`
+  Value     uint  `json:"value"`
 }
 
 var hlls = make(map[string]*hyperloglog.HyperLogLogPlus)
@@ -37,7 +36,7 @@ func HLLPlus(w http.ResponseWriter, r *http.Request) {
     hll.Add(hash64(item))
     resp.Result = true
   } else if r.Method == "GET" {
-    resp.Value = strconv.FormatUint(hll.Count(), 10)
+    hll.Count()
     resp.Result = true
   }
   json.NewEncoder(w).Encode(resp)

@@ -5,12 +5,11 @@ import (
   "github.com/gorilla/mux"
   "net/http"
   "encoding/json"
-  "strconv"
 )
 
 type CMLResponse struct {
   Response
-  Value     string  `json:"value"`
+  Value     float64  `json:"value"`
 }
 
 var cmlogs = make(map[string]*cml.Sketch)
@@ -28,7 +27,7 @@ func CountMinLog(w http.ResponseWriter, r *http.Request) {
   } else if r.Method == "POST" {
     resp.Result = cmlog.IncreaseCount([]byte(item))
   } else if r.Method == "GET" {
-    resp.Value = strconv.FormatFloat(cmlog.Frequency([]byte(item)), 'f', 2, 64)
+    resp.Value = cmlog.Frequency([]byte(item))
     resp.Result = true
   }
   json.NewEncoder(w).Encode(resp)

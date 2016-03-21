@@ -5,12 +5,11 @@ import (
   "github.com/gorilla/mux"
   "net/http"
   "encoding/json"
-  "strconv"
 )
 
 type CMSResponse struct {
   Response
-  Value     string  `json:"value"`
+  Value     uint  `json:"value"`
 }
 
 var cmsketchs = make(map[string]*countminsketch.CountMinSketch)
@@ -31,7 +30,7 @@ func CountMinSketch(w http.ResponseWriter, r *http.Request) {
     cmsketch.UpdateString(item, 1)
     resp.Result = true
   } else if r.Method == "GET" {
-    resp.Value = strconv.Itoa(int(cmsketch.EstimateString(item)))
+    resp.Value = cmsketch.EstimateString(item)
     resp.Result = true
   }
   json.NewEncoder(w).Encode(resp)
