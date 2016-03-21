@@ -3,7 +3,8 @@ package main
 import (
   "log"
   "net/http"
-  "encoding/json"
+
+  "github.com/gorilla/mux"
 )
 
 type Response struct {
@@ -13,12 +14,14 @@ type Response struct {
   Endpoint  string  `json:"endpoint"`
 }
 
-func main() {
-  router := GetRouter()
-  log.Fatal(http.ListenAndServe(":8080", router))
+func Middleware(router *mux.Router) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        log.Println("middleware", r.URL)
+        router.ServeHTTP(w, r)
+    })
 }
 
-func Index(w http.ResponseWriter, r *http.Request) {
-  resp := Response{Method: r.Method, Endpoint: r.URL.Path}
-  json.NewEncoder(w).Encode(resp)
+func main() {
+  router := GetRouter()
+  log.Fatal(http.ListenAndServe(":8080", Middleware(router)))
 }
