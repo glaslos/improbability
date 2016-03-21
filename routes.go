@@ -1,6 +1,16 @@
 package main
 
-import "github.com/gorilla/mux"
+import (
+  "net/http"
+  "encoding/json"
+  "github.com/gorilla/mux"
+  )
+
+
+func Index(w http.ResponseWriter, r *http.Request) {
+  resp := Response{Method: r.Method, Endpoint: r.URL.Path}
+  json.NewEncoder(w).Encode(resp)
+}
 
 func GetRouter() *mux.Router {
   router := mux.NewRouter().StrictSlash(true)
