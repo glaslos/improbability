@@ -16,13 +16,13 @@ type Response struct {
 
 func Middleware(router *mux.Router) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        log.Println("middleware", r.URL)
+        //log.Println("middleware", r.URL)
         auth_key := r.URL.Query().Get("auth")
         if len(auth_key) == 0 {
           http.Error(w, "missing auth", http.StatusUnauthorized)
           return
         }
-        log.Println(auth_key)
+        //log.Println(auth_key)
         router.ServeHTTP(w, r)
     })
 }
