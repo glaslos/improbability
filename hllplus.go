@@ -11,7 +11,7 @@ import (
 
 type HLLResponse struct {
   Response
-  Value     uint  `json:"value"`
+  Value     uint64  `json:"value"`
 }
 
 var hlls = make(map[string]*hyperloglog.HyperLogLogPlus)
@@ -36,7 +36,7 @@ func HLLPlus(w http.ResponseWriter, r *http.Request) {
     hll.Add(hash64(item))
     resp.Result = true
   } else if r.Method == "GET" {
-    hll.Count()
+    resp.Value = hll.Count()
     resp.Result = true
   }
   json.NewEncoder(w).Encode(resp)
