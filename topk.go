@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"sync"
 
 	gotopk "github.com/dgryski/go-topk"
 	"github.com/gorilla/mux"
@@ -16,6 +17,7 @@ type tkResponse struct {
 var topks = make(map[string]*gotopk.Stream)
 
 func topK(w http.ResponseWriter, r *http.Request) {
+	var mutex = &sync.Mutex{}
 	vars := mux.Vars(r)
 	name := vars["name"]
 	item := r.URL.Query().Get("item")
@@ -27,7 +29,9 @@ func topK(w http.ResponseWriter, r *http.Request) {
 		resp.Result = true
 	} else if r.Method == "POST" {
 		if len(item) != 0 {
+			mutex.Lock()
 			topk.Insert(item, 1)
+			mutex.Unlock()
 		} else {
 			decoder := json.NewDecoder(r.Body)
 			var hashes map[string]interface{}
@@ -36,7 +40,9 @@ func topK(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 			for hash := range hashes {
+				mutex.Lock()
 				topk.Insert(hash, 1)
+				mutex.Unlock()
 			}
 		}
 		resp.Result = true
