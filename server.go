@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/gorilla/mux"
 )
@@ -14,6 +15,9 @@ type Response struct {
 	Method   string `json:"method"`
 	Endpoint string `json:"endpoint"`
 }
+
+var mutex = &sync.Mutex{}
+var topkMutex = &sync.Mutex{}
 
 // Middleware for auth check
 func Middleware(router *mux.Router) http.Handler {
