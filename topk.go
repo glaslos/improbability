@@ -14,6 +14,11 @@ type tkResponse struct {
 	Value []gotopk.Element `json:"value"`
 }
 
+// TopKService holds pointers to data
+type TopKService struct {
+	Tables map[string]*gotopk.Stream
+}
+
 var topks = make(map[string]*gotopk.Stream)
 
 func topK(w http.ResponseWriter, r *http.Request) {
